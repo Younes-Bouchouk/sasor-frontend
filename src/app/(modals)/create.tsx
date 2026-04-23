@@ -1,11 +1,11 @@
 import { Text } from "react-native";
 import { ScreenView } from "@/components/ui/ScreenView";
-import { TitlePage } from "@/components/ui/TitlePage";
+import { TitleScreen } from "@/components/ui/TitleScreen";
 
 export default function CreateEventScreen() {
   return (
     <ScreenView modal>
-      <TitlePage>CRÉER UN EVENT</TitlePage>
+      <TitleScreen>CRÉER UN EVENT</TitleScreen>
     </ScreenView>
   );
 }

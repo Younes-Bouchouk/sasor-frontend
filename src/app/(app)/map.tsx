@@ -1,11 +1,11 @@
 import { ScreenView } from "@/components/ui/ScreenView";
-import { TitlePage } from "@/components/ui/TitlePage";
+import { TitleScreen } from "@/components/ui/TitleScreen";
 import { Text } from "react-native";
 
 export default function MapScreen() {
   return (
     <ScreenView>
-      <TitlePage>MAP</TitlePage>
+      <TitleScreen>MAP</TitleScreen>
     </ScreenView>
   );
 }

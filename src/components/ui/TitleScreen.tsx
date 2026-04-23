@@ -5,7 +5,7 @@ type Props = {
   className?: string;
 };
 
-export const TitlePage = ({children, className}: Props) => {
+export const TitleScreen = ({children, className}: Props) => {
   return (
     <Text className={`text-foreground text-center font-bold text-2xl ${className}`}>
       {children}

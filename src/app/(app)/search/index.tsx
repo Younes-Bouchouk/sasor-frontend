@@ -1,10 +1,10 @@
 import { ScreenView } from "@/components/ui/ScreenView";
-import { TitlePage } from "@/components/ui/TitlePage";
+import { TitleScreen } from "@/components/ui/TitleScreen";
 
 export default function SearchScreen() {
   return (
     <ScreenView>
-      <TitlePage>RECHERCHE</TitlePage>
+      <TitleScreen>RECHERCHE</TitleScreen>
     </ScreenView>
   );
 }

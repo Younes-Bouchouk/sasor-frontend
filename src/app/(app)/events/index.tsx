@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Button, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { ScreenView } from "@/components/ui/ScreenView"
-import { TitlePage } from "@/components/ui/TitlePage";
+import { TitleScreen } from "@/components/ui/TitleScreen";
 
 const EVENTS = [
   { id: "1", title: "Foot", date: "15 Mars 2024" },
@@ -28,7 +28,7 @@ export default function EventsScreen() {
 
   return (
     <ScreenView>
-      <TitlePage>MES EVENTS</TitlePage>
+      <TitleScreen>MES EVENTS</TitleScreen>
       <View className="flex-1 flex flex-col justify-between">
         <FlatList
           className="max-h-60 border"
