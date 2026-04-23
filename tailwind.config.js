@@ -18,9 +18,12 @@ module.exports = {
       spacing: {
         xs:   "8px",
         sm:   "12px",
-        md:   "16px",     // ← le plus utilisé pour padding écran / gutters
-        lg:   "20px",     // ou 24px selon tes goûts
+        md:   "16px",
+        lg:   "20px",
         xl:   "24px",
+      },
+      width: {
+        avatar: "48px",
       }
     },
   },

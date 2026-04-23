@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
@@ -16,13 +16,13 @@ export const ScreenView = ({children, className = "", modal = false}: Props) => 
     <ScrollView
       className={`
         flex-1 bg-background 
-        ${modal ? "pt-8" : "pt-2"}
-        ${className} 
+        ${modal ? "pt-md" : "pt-xs"} 
       `}
-      style={{paddingBottom: bottom + 60}}
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 60 }}
     >
-      {children}
+      <View className={`flex-1 px-xs ${className}`}>
+          {children}
+      </View>
     </ScrollView>
   );
 }

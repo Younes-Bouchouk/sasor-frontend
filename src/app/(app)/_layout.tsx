@@ -1,4 +1,5 @@
-import Navbar from "@/components/Navbar";
+
+import Navbar from "@/components/layout/Navbar";
 import { Tabs } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
