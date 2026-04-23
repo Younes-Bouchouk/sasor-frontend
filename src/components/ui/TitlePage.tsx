@@ -1,0 +1,14 @@
+import { Text } from "react-native";
+
+type Props = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export const TitlePage = ({children, className}: Props) => {
+  return (
+    <Text className={`text-foreground text-center font-bold text-2xl ${className}`}>
+      {children}
+    </Text>
+  )
+}

@@ -1,13 +1,19 @@
+import Navbar from "@/components/Navbar";
 import { Tabs } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AppLayout() {
   return (
-    <Tabs screenOptions={{headerShown: true}}>
-      <Tabs.Screen name="index" options={{title:"Accueil"}}/>
-      <Tabs.Screen name="create" options={{title:"Créer"}}/>
-      <Tabs.Screen name="events" options={{title:"Mes events"}}/>
-      <Tabs.Screen name="search" options={{title:"Recherche"}}/>
-      
-    </Tabs>
-  )
+    <SafeAreaView style={{ flex: 1 }} className="bg-background" edges={["top"]}>
+      <Tabs
+        tabBar={(props) => <Navbar {...props} />}
+        screenOptions={{ headerShown: false }}
+      >
+        <Tabs.Screen name="index" options={{ title: "Accueil"}} />
+        <Tabs.Screen name="map" options={{ title: "Map" }} />
+        <Tabs.Screen name="events" options={{ title: "Mes events" }} />
+        <Tabs.Screen name="search" options={{ title: "Recherche" }} />
+      </Tabs>
+    </SafeAreaView>
+  );
 }

@@ -1,10 +1,11 @@
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitlePage } from "@/components/ui/TitlePage";
+import { Text } from "react-native";
 
-export default function SearchScreen() {
+export default function MapScreen() {
   return (
     <ScreenView>
-      <TitlePage>RECHERCHE</TitlePage>
+      <TitlePage>MAP</TitlePage>
     </ScreenView>
   );
 }

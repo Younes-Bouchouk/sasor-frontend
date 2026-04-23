@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --background: hsl(0, 0%, 95%);
+    --foreground: hsl(0, 0%, 0%);
+    --primary: hsl(225, 99%, 65%);
+    --secondary: hsl(155, 98%, 54%);
+    --border: hsl(0, 0%, 80%);
+    --space: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: hsl(0, 0%, 13%);
+        --foreground: hsl(0, 0%, 95%);
+        --primary: hsl(155, 98%, 54%);
+        --secondary: hsl(225, 99%, 65%);
+        --border: hsl(0, 0%, 20%);
+        --space: 0.25rem;
+    }
+}
+
+@layer base {
+  * {
+    color: var(--foreground);
+  }
+}
