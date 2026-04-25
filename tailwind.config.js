@@ -9,23 +9,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
-        border: 'var(--border)',
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        border: "var(--border)",
       },
       spacing: {
-        xs:   "8px",
-        sm:   "12px",
-        md:   "16px",
-        lg:   "20px",
-        xl:   "24px",
+        xs: "8px",
+        sm: "12px",
+        md: "16px",
+        lg: "20px",
+        xl: "24px",
+        screen_edge: "12px",
       },
       width: {
-        avatar: "48px",
-      }
+        avatar: "40px",
+      },
+      height: {
+        navbar: "60px",
+      },
     },
   },
   plugins: [],
-}
+};

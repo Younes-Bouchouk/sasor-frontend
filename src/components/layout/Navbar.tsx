@@ -4,7 +4,12 @@ import { BlurView } from "expo-blur";
 import { Image } from "expo-image";
 import { RelativePathString, usePathname, useRouter } from "expo-router";
 import React from "react";
-import { Pressable, TouchableOpacity, useColorScheme, View } from "react-native";
+import {
+  Pressable,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ViewType = {
@@ -30,7 +35,6 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { bottom } = useSafeAreaInsets();
-
 
   const colorScheme = useColorScheme();
   const blurTint = colorScheme === "dark" ? "light" : "dark";
@@ -66,7 +70,10 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
 
   return (
     <>
-      <View className="absolute bottom-0 left-md right-md h-[60px]" style={{ bottom: bottom - 8 }}>
+      <View
+        className="absolute bottom-0 left-screen_edge right-screen_edge h-navbar"
+        style={{ bottom: bottom - 8 }}
+      >
         <View className="h-full flex flex-row justify-between items-center gap-xl">
           <BlurView
             intensity={10}
@@ -79,40 +86,40 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
           </BlurView>
         </View>
       </View>
-      {
-        ["/", "/map"].includes(pathname) && (
-          <View className="absolute top-xs right-md">
-            <TouchableOpacity 
-              onPress={()=>{
-                const tabName = screenToTabName("/profile");
-                const tabRoute = state.routes.find((r) => r.name === tabName);
+      {["/", "/map"].includes(pathname) && (
+        <View className="absolute top-screen_edge right-screen_edge">
+          <TouchableOpacity
+            onPress={() => {
+              const tabName = screenToTabName("/profile");
+              const tabRoute = state.routes.find((r) => r.name === tabName);
 
-                if (!tabRoute) {
-                  router.push('/profile' as RelativePathString);
-                  return;
-                }
+              if (!tabRoute) {
+                router.push("/profile" as RelativePathString);
+                return;
+              }
 
-                const event = navigation.emit({
-                  type: "tabPress",
-                  target: tabRoute.key,
-                  canPreventDefault: true,
-                });
+              const event = navigation.emit({
+                type: "tabPress",
+                target: tabRoute.key,
+                canPreventDefault: true,
+              });
 
-                if (!event.defaultPrevented) {
-                  navigation.navigate(tabName as never);
-                }
+              if (!event.defaultPrevented) {
+                navigation.navigate(tabName as never);
+              }
+            }}
+            className="w-avatar aspect-square rounded-full overflow-hidden border border-border bg-secondary"
+          >
+            <Image
+              style={{ width: "100%", height: "100%" }}
+              contentFit="cover"
+              source={{
+                uri: "https://static.wikia.nocookie.net/captaintsubasa/images/0/0f/Genz%C3%B4_Wakabayashi_1983_2.jpg/revision/latest?cb=20190927155619&path-prefix=fr",
               }}
-              className="w-avatar aspect-square rounded-full overflow-hidden border border-border bg-secondary"
-            >
-              <Image
-                style={{width:"100%", height:"100%"}}
-                contentFit="cover"
-                source={{ uri: "https://static.wikia.nocookie.net/captaintsubasa/images/0/0f/Genz%C3%B4_Wakabayashi_1983_2.jpg/revision/latest?cb=20190927155619&path-prefix=fr" }}
-              />
-            </TouchableOpacity>
-          </View>
-        )
-      }
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </>
   );
 }
