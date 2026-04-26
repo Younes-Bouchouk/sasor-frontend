@@ -16,8 +16,8 @@ type ViewType = {
 };
 
 const views: ViewType[] = [
-  { id: "1", screen: "/", icon: "home" },
   { id: "2", screen: "/map", icon: "map" },
+  { id: "1", screen: "/", icon: "home" },
   { id: "3", screen: "/create", icon: "add" },
   { id: "4", screen: "/events", icon: "calendar-clear" },
   { id: "5", screen: "/search", icon: "search" },
