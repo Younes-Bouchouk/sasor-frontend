@@ -24,7 +24,8 @@ module.exports = {
         screen_edge: "12px",
       },
       width: {
-        avatar: "40px",
+        avatar_sm: "40px",
+        avatar_lg: "96px",
       },
       height: {
         navbar: "60px",

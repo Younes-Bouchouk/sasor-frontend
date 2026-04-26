@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchAPI } from "../services/api";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAuth } from "@/features/auth";
 
 export function useFetchQuery(key: string, path: string, interval?: number) {
     return useQuery({

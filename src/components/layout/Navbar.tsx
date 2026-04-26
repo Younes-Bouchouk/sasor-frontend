@@ -1,15 +1,11 @@
+import { Avatar } from "@/components/ui/Avatar";
+import { useAuth } from "@/features/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
-import { Image } from "expo-image";
 import { RelativePathString, usePathname, useRouter } from "expo-router";
 import React from "react";
-import {
-  Pressable,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
+import { Pressable, useColorScheme, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ViewType = {
@@ -27,14 +23,14 @@ const views: ViewType[] = [
   { id: "5", screen: "/search", icon: "search" },
 ];
 
-// Convertit un chemin expo-router vers le nom de l'onglet dans le Tab navigator
 const screenToTabName = (screen: string) =>
   screen === "/" ? "index" : screen.slice(1);
 
 export default function Navbar({ state, navigation }: BottomTabBarProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { bottom } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
+  const { user } = useAuth();
 
   const colorScheme = useColorScheme();
   const blurTint = colorScheme === "dark" ? "light" : "dark";
@@ -88,36 +84,11 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
       </View>
       {["/", "/map"].includes(pathname) && (
         <View className="absolute top-screen_edge right-screen_edge">
-          <TouchableOpacity
-            onPress={() => {
-              const tabName = screenToTabName("/profile");
-              const tabRoute = state.routes.find((r) => r.name === tabName);
-
-              if (!tabRoute) {
-                router.push("/profile" as RelativePathString);
-                return;
-              }
-
-              const event = navigation.emit({
-                type: "tabPress",
-                target: tabRoute.key,
-                canPreventDefault: true,
-              });
-
-              if (!event.defaultPrevented) {
-                navigation.navigate(tabName as never);
-              }
-            }}
-            className="w-avatar aspect-square rounded-full overflow-hidden border border-border bg-secondary"
-          >
-            <Image
-              style={{ width: "100%", height: "100%" }}
-              contentFit="cover"
-              source={{
-                uri: "https://static.wikia.nocookie.net/captaintsubasa/images/0/0f/Genz%C3%B4_Wakabayashi_1983_2.jpg/revision/latest?cb=20190927155619&path-prefix=fr",
-              }}
-            />
-          </TouchableOpacity>
+          <Avatar
+            uri={user?.image}
+            size="sm"
+            onPress={() => router.push("/profile" as RelativePathString)}
+          />
         </View>
       )}
     </>

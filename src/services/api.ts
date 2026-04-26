@@ -4,10 +4,10 @@
 // export const API_BASE_URL = "http://172.20.10.2:4000";
 
 /* YOUNES */
-export const API_BASE_URL = "http://192.168.1.86:4000";
+// export const API_BASE_URL = "http://192.168.1.86:4000";
 
 /* RENDER */
-// export const API_BASE_URL = "https://sasor-backend.onrender.com";
+export const API_BASE_URL = "https://sasor-backend.onrender.com";
 
 export const fetchAPI = async (
   path: string,

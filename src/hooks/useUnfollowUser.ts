@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { fetchAPI } from "../services/api";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAuth } from "@/features/auth";
 
 export function useUnfollowUser() {
     const { token } = useAuth();

@@ -1,29 +1,18 @@
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitleScreen } from "@/components/ui/TitleScreen";
-import { useAuth } from "@/contexts/AuthProvider";
-import { Image } from "expo-image";
+import { Avatar } from "@/components/ui/Avatar";
+import { useAuth } from "@/features/auth";
 import { Text, TouchableOpacity, View } from "react-native";
-// import {} from "@/../assets/images"
 
 export default function ProfileScreen() {
-  const { user, logout, token } = useAuth();
-  console.log(token);
-  console.log(user);
+  const { user, logout } = useAuth();
 
   return (
     <ScreenView>
       <TitleScreen>PROFIL</TitleScreen>
       <View className="flex-1 gap-md pt-md">
         <View className="items-center gap-sm">
-          <Image
-            source={
-              user?.image
-                ? { uri: user.image }
-                : require("@/../assets/images/icon.png")
-            }
-            style={{ width: 96, height: 96, borderRadius: 48 }}
-            contentFit="cover"
-          />
+          <Avatar uri={user?.image} size="lg" />
           <Text className="text-foreground text-xl font-bold">
             {user?.pseudo}
           </Text>
