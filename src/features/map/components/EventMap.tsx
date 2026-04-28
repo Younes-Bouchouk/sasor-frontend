@@ -6,22 +6,22 @@ import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Dimensions,
-    Image,
-    Linking,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Image,
+  Linking,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import MapView, {
-    Callout,
-    Marker,
-    PROVIDER_GOOGLE,
-    Region,
+  Callout,
+  Marker,
+  PROVIDER_GOOGLE,
+  Region,
 } from "react-native-maps";
 
 const { width, height } = Dimensions.get("window");
@@ -91,8 +91,6 @@ const EventMap = () => {
     if (event.image && isValidUrl(event.image)) {
       return event.image;
     }
-    // Fallback vers l'image par sport
-    //eturn getSportImage(event.sport);
   };
 
   // Vérifier si l'URL est valide
