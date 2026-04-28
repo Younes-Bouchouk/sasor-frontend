@@ -1,7 +1,10 @@
 import { AuthProvider, useAuth } from "@/features/auth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
+
+const queryClient = new QueryClient();
 
 function AuthGuard() {
   const { token, isLoading } = useAuth();
@@ -23,19 +26,21 @@ function AuthGuard() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <AuthGuard />
-      <Stack>
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="(modals)"
-          options={{
-            headerShown: false,
-            presentation: "modal",
-          }}
-        />
-      </Stack>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AuthGuard />
+        <Stack>
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(modals)"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
+        </Stack>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

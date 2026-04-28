@@ -31,12 +31,12 @@ export const ScreenView = ({
   return (
     <ScrollView
       className={`
-        flex-1 bg-background
+        flex-1 bg-background 
         ${modal ? "pt-md" : "pt-xs"}
       `}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 60 }}
     >
-      <View className={`flex-1 px-screen_edge ${className}`}>{children}</View>
+      <View className={`flex-1  px-screen_edge ${className}`}>{children}</View>
     </ScrollView>
   );
 };

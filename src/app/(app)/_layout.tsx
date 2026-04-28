@@ -13,7 +13,7 @@ export default function AppLayout() {
         <Tabs.Screen name="map" options={{ title: "Map" }} />
         <Tabs.Screen name="events" options={{ title: "Mes events" }} />
         <Tabs.Screen name="search" options={{ title: "Recherche" }} />
-        <Tabs.Screen name="profile" options={{ href: null }} />
+        <Tabs.Screen name="profile" options={{ title: "Profil" }} />
       </Tabs>
     </SafeAreaView>
   );

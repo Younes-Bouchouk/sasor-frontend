@@ -1,20 +1,10 @@
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitleScreen } from "@/components/ui/TitleScreen";
-import { Image } from "expo-image";
+import { Event, EventCard } from "@/features/events";
 import { router } from "expo-router";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, View } from "react-native";
 
-export type Event = {
-  id: string;
-  title: string;
-  sport: string;
-  date: string;
-  location: string;
-  description: string;
-  image: string;
-};
-
-export const EVENTS_TEST: Event[] = [
+const EVENTS_TEST: Event[] = [
   {
     id: "1",
     title: "Tournoi de football",
@@ -116,27 +106,10 @@ export default function EventsScreen() {
           data={EVENTS_TEST}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              className="flex flex-row gap-xs mb-xs border border-border rounded-lg overflow-hidden"
+            <EventCard
+              event={item}
               onPress={() => router.push(`/(app)/events/${item.id}`)}
-            >
-              <Image
-                source={{ uri: item.image }}
-                contentFit="cover"
-                style={{ width: 80, height: 80 }}
-              />
-              <View className="flex-1 py-xs pr-xs justify-center gap-1">
-                <Text className="text-foreground font-semibold">
-                  {item.title}
-                </Text>
-                <Text className="text-foreground opacity-60 text-sm">
-                  {item.sport} · {item.date}
-                </Text>
-                <Text className="text-foreground opacity-40 text-sm">
-                  {item.location}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            />
           )}
         />
       </View>
