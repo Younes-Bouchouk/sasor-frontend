@@ -24,13 +24,22 @@ module.exports = {
         lg: "20px",
         xl: "24px",
         screen_edge: "12px",
+        "badge-x": "8px",
+        "badge-y": "2px",
       },
       width: {
         avatar_sm: "40px",
         avatar_lg: "96px",
+        "event-card": "200px",
       },
       height: {
         navbar: "60px",
+      },
+      aspectRatio: {
+        event_image: "16/9",
+      },
+      borderRadius: {
+        event_image: "8px",
       },
     },
   },

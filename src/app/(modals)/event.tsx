@@ -1,20 +1,23 @@
+import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
 import { useEvents } from "@/features/events";
-import { Image } from "expo-image";
+import { EventImage } from "@/features/events/components/EventImage";
+import {
+  formatEventDate,
+  formatEventTime,
+} from "@/features/events/utils/formatEventDateTime";
 import { useLocalSearchParams } from "expo-router";
-import { Text, useWindowDimensions, View } from "react-native";
+import { FlatList, Text, useWindowDimensions, View } from "react-native";
 
-export default function EventDetailScreen() {
+export default function EventDetailModal() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { width } = useWindowDimensions();
   const { data: events } = useEvents();
-  const test = events?.map((e) => console.log(e.id, e.name));
-  console.log(id);
   const event = events?.find((e) => e.id == id);
 
   if (!event) {
     return (
-      <ScreenView>
+      <ScreenView modal>
         <Text className="text-foreground text-center mt-8">
           Événement introuvable.
         </Text>
@@ -23,12 +26,8 @@ export default function EventDetailScreen() {
   }
 
   return (
-    <ScreenView className="">
-      <Image
-        source={{ uri: event.image }}
-        contentFit="cover"
-        style={{ width, height: 220, marginHorizontal: -8 }}
-      />
+    <ScreenView modal>
+      <EventImage image={event.image} style={{ borderRadius: 32 }} />
 
       <View className="mt-md gap-sm">
         <Text className="text-foreground text-2xl font-bold">{event.name}</Text>
@@ -42,7 +41,8 @@ export default function EventDetailScreen() {
         </View>
 
         <View className="gap-xs mt-xs">
-          <Row label="Date" value={event.startAt} />
+          <Row label="Date" value={formatEventDate(event.startAt)} />
+          <Row label="Heure" value={formatEventTime(event.startAt)} />
           <Row label="Lieu" value={event.location} />
         </View>
 
@@ -52,6 +52,23 @@ export default function EventDetailScreen() {
           </Text>
           <Text className="text-foreground leading-6">{event.description}</Text>
         </View>
+        <FlatList
+          className="pl-4" // Solution temporaire pour que le carroussel colle les bords
+          data={event.participants}
+          keyExtractor={(item) => item.participant.id}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          contentContainerStyle={{ paddingRight: 12 }}
+          renderItem={({ item }) => (
+            <View className="flex flex-row items-center gap-xs">
+              <Avatar
+                id={item.participant.id}
+                uri={item.participant.profilePicture}
+              />
+              <Text className="text-foreground">{item.participant.pseudo}</Text>
+            </View>
+          )}
+        />
       </View>
     </ScreenView>
   );

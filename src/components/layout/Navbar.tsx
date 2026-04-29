@@ -85,7 +85,8 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
       {["/", "/map"].includes(pathname) && (
         <View className="absolute top-screen_edge right-screen_edge">
           <Avatar
-            uri={user?.image}
+            id={user.id}
+            uri={user.profilePicture}
             size="sm"
             onPress={() => router.push("/profile" as RelativePathString)}
           />

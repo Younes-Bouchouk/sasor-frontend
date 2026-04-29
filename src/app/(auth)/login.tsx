@@ -3,7 +3,6 @@ import { TitleScreen } from "@/components/ui/TitleScreen";
 import { LoginForm } from "@/features/auth";
 import { fetchAPI } from "@/services/api";
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
 
 export default function LoginScreen() {
   const [test, setTest] = useState("chargement...");
@@ -17,7 +16,7 @@ export default function LoginScreen() {
   return (
     <ScreenView>
       <TitleScreen>CONNEXION</TitleScreen>
-      <Text className="text-foreground text-center">test API: {test}</Text>
+      {/* <Text className="text-foreground text-center">test API: {test}</Text> */}
       <LoginForm />
     </ScreenView>
   );

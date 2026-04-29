@@ -4,6 +4,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
