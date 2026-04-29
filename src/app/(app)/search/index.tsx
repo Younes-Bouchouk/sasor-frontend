@@ -1,23 +1,55 @@
-// src/app/(app)/search/index.tsx (version améliorée)
+// src/app/(app)/search/index.tsx
 import { SearchSkeleton } from "@/features/search/components/LoadingSkeleton";
 import { SearchBar } from "@/features/search/components/SearchBar";
 import { UserCard } from "@/features/search/components/UserCard";
 import { useUserSearch } from "@/hooks/useUserSearch";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { FlatList, RefreshControl, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { FlatList, RefreshControl, Text, View, ActivityIndicator, Modal, TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function SearchPage() {
+  const router = useRouter();
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [filters, setFilters] = useState({
+    sport: "",
+    minParticipants: "",
+    maxParticipants: "",
+  });
+
   const {
     users,
     isLoading,
     hasSearched,
-    isPending,
     handleSearch,
     handleFollow,
     handleUnfollow,
+    isFollowing,
+    error,
   } = useUserSearch();
+
+  const handleFilterPress = () => {
+    // Navigation vers le modal via expo-router
+    router.push("/(modals)/filterSearch");
+    // Ou si vous voulez un modal local:
+    // setFilterModalVisible(true);
+  };
+
+  // Gestion de l'erreur
+  if (error) {
+    return (
+      <GestureHandlerRootView className="flex-1 ">
+        <View className="flex-1 items-center justify-center">
+          <Ionicons name="alert-circle" size={64} color="#E74C3C" />
+          <Text className="text-red-500 text-center mt-4">Une erreur est survenue</Text>
+          <Text className="text-gray-400 text-center text-sm mt-2 px-4">
+            {JSON.stringify(error)}
+          </Text>
+        </View>
+      </GestureHandlerRootView>
+    );
+  }
 
   const renderEmptyState = () => {
     if (!hasSearched) {
@@ -35,7 +67,7 @@ export default function SearchPage() {
       return <SearchSkeleton />;
     }
 
-    if (hasSearched && users?.length === 0) {
+    if (hasSearched && users.length === 0) {
       return (
         <View className="flex-1 items-center justify-center py-20">
           <Ionicons name="people-outline" size={64} color="#374151" />
@@ -53,16 +85,35 @@ export default function SearchPage() {
   };
 
   return (
-    <GestureHandlerRootView className="flex-1">
+    <GestureHandlerRootView className="flex-1 ">
       <View className="flex-1">
         {/* Header */}
         <View className="pt-12 pb-4 px-4 border-b border-gray-800">
-          <SearchBar onSearch={handleSearch} isLoading={isLoading} />
+          <SearchBar 
+            onSearch={handleSearch} 
+            isLoading={isLoading}
+            onFilterPress={handleFilterPress}
+            showBackButton={true}
+          />
         </View>
-        {/* Results */}
+
+        {/* Affichage des filtres actifs */}
+        {(filters.sport || filters.minParticipants || filters.maxParticipants) && (
+          <View className="px-4 py-2 flex-row flex-wrap gap-2 border-b border-gray-800">
+            {filters.sport && (
+              <View className="bg-gray-800 rounded-full px-3 py-1 flex-row items-center">
+                <Text className="text-[#18FD9C] text-xs">Sport: {filters.sport}</Text>
+                <TouchableOpacity onPress={() => setFilters({ ...filters, sport: "" })}>
+                  <Ionicons name="close-circle" size={14} color="#9CA3AF" />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
+
         <FlatList
           data={users}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id?.toString() || Math.random().toString()}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
@@ -76,9 +127,9 @@ export default function SearchPage() {
           renderItem={({ item }) => (
             <UserCard
               user={item}
+              isFollowing={isFollowing(item.id)}
               onFollow={handleFollow}
               onUnfollow={handleUnfollow}
-              isPending={isPending}
             />
           )}
           contentContainerStyle={{ flexGrow: 1 }}

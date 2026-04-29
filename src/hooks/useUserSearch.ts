@@ -1,69 +1,133 @@
-// src/hooks/useUserSearch.ts
 import { useFetchQuery } from "@/hooks/useFetchQuery";
 import { useFollowUser } from "@/hooks/useFollowUser";
 import { useUnfollowUser } from "@/hooks/useUnfollowUser";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert } from "react-native";
 
 export const useUserSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
+  const [followingStatus, setFollowingStatus] = useState<Record<string, boolean>>({});
 
+  //  Initialiser les hooks 
+  const { mutate: followUser, isPending: isFollowPending } = useFollowUser();
+  const { mutate: unfollowUser, isPending: isUnfollowPending } = useUnfollowUser();
+
+  // Récupérer la liste des utilisateurs que JE suis (mes abonnements)
   const {
-    data: users,
-    isLoading,
-    error,
-    refetch,
-  } = useFetchQuery("users", `/users?search=${searchQuery}`, 500);
+    data: myFollowing,
+    isLoading: isLoadingFollowing,
+    refetch: refetchFollowing,
+  } = useFetchQuery("my-following", "/follows/me/following", 500);
 
-  const { mutate: unfollow, isPending: isUnfollowPending } = useUnfollowUser();
-  const { mutate: follow, isPending: isFollowPending } = useFollowUser();
+  // Charge TOUS les utilisateurs
+  const {
+    data: allUsersData,
+    isLoading: isLoadingAll,
+    error: errorAll,
+    refetch: refetchAll,
+  } = useFetchQuery("all-users", "/users", 500);
+
+  // Charge les utilisateurs filtrés
+  const {
+    data: searchUsersData,
+    isLoading: isLoadingSearch,
+    error: errorSearch,
+    refetch: refetchSearch,
+  } = useFetchQuery(
+    searchQuery ? `users-search-${searchQuery}` : "empty",
+    searchQuery ? `/users?search=${searchQuery}` : "",
+    500
+  );
+
+  // Synchroniser l'état des follows avec la liste récupérée
+  useEffect(() => {
+    if (Array.isArray(myFollowing) && myFollowing.length > 0) {
+      const newStatus: Record<string, boolean> = {};
+      myFollowing.forEach((follow: any) => {
+        if (follow.followingId) {
+          newStatus[follow.followingId] = true;
+        }
+      });
+      setFollowingStatus(prev => ({ ...prev, ...newStatus }));
+    }
+  }, [myFollowing]);
+
+  const isSearching = searchQuery.trim().length > 0;
+  const users = isSearching 
+    ? (Array.isArray(searchUsersData) ? searchUsersData : [])
+    : (Array.isArray(allUsersData) ? allUsersData : []);
+  
+  const isLoading = isLoadingFollowing || (isSearching ? isLoadingSearch : isLoadingAll);
+  const error = isSearching ? errorSearch : errorAll;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setHasSearched(true);
     if (query.trim()) {
-      refetch();
+      refetchSearch();
     }
   };
 
-  const handleFollow = (userId: number) => {
-    follow(userId, {
+  const handleFollow = (userId: string) => {
+    // Vérifier si on suit déjà
+    if (followingStatus[userId]) {
+      return;
+    }
+
+    setFollowingStatus(prev => ({ ...prev, [userId]: true }));
+    
+    followUser(userId, {
       onSuccess: () => {
-        refetch();
+        console.log("Follow réussi");
+        refetchFollowing();
+        isSearching ? refetchSearch() : refetchAll();
       },
       onError: (error: any) => {
-        const message = error?.message || "";
-        if (message.includes("already") || message.includes("déjà")) {
-          Alert.alert("Information", "Vous suivez déjà cet utilisateur");
+        console.error("Erreur follow:", error);
+        setFollowingStatus(prev => ({ ...prev, [userId]: false }));
+        
+        if (error?.message?.includes("déjà")) {
+          setFollowingStatus(prev => ({ ...prev, [userId]: true }));
         } else {
-          Alert.alert("Erreur", "Impossible de suivre cet utilisateur");
         }
       },
     });
   };
 
-  const handleUnfollow = (userId: number) => {
-    unfollow(userId, {
+  const handleUnfollow = (userId: string) => {
+    setFollowingStatus(prev => ({ ...prev, [userId]: false }));
+    
+    unfollowUser(userId, {
       onSuccess: () => {
-        refetch();
+        console.log("Unfollow réussi");
+        refetchFollowing();
+        isSearching ? refetchSearch() : refetchAll();
       },
       onError: (error: any) => {
-        Alert.alert("Erreur", "Impossible de ne plus suivre cet utilisateur");
+        console.error("Erreur unfollow:", error);
+        setFollowingStatus(prev => ({ ...prev, [userId]: true }));
+        Alert.alert("Erreur", "Impossible de ne plus suivre");
       },
     });
+  };
+
+  const isFollowing = (userId: string) => {
+    return followingStatus[userId] === true;
   };
 
   return {
     users,
     isLoading,
     error,
-    hasSearched,
+    hasSearched: true,
     searchQuery,
     isPending: isFollowPending || isUnfollowPending,
     handleSearch,
     handleFollow,
     handleUnfollow,
-    refetch,
+    isFollowing,
+    refetch: () => {
+      refetchFollowing();
+      isSearching ? refetchSearch() : refetchAll();
+    },
   };
 };

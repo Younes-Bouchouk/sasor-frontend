@@ -1,7 +1,9 @@
-export type User = {
-  id: number;
+export interface User {
+  id: string; 
   pseudo: string;
-  image: String | null;
-  isFollowing?: boolean;
+  email?: string;
+  profilePicture?: string;
+  image?: string;
   isFollower?: boolean;
-};
+  isFollowing?: boolean;
+}

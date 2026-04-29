@@ -16,6 +16,6 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000", // Changé de #fff à #000 pour cohérence
+    backgroundColor: "#000", 
   },
 });

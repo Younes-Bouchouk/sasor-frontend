@@ -11,6 +11,13 @@ export default function ModalsLayout() {
           headerShown: false,
         }}
       />
+            <Stack.Screen
+        name="filterSearch"
+        options={{
+          title: "Modal Filter",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
