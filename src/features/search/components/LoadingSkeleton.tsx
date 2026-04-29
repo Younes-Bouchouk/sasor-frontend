@@ -10,4 +10,4 @@ export const SearchSkeleton = () => {
       </Text>
     </View>
   );
-};
+}; 
