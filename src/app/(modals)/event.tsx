@@ -6,6 +6,7 @@ import {
   formatEventDate,
   formatEventTime,
 } from "@/features/events/utils/formatEventDateTime";
+import { formatSportLabel } from "@/features/events/utils/formatSportLabel";
 import { useLocalSearchParams } from "expo-router";
 import { FlatList, Text, useWindowDimensions, View } from "react-native";
 
@@ -25,6 +26,8 @@ export default function EventDetailModal() {
     );
   }
 
+  const sportLabel = formatSportLabel(event.sport);
+
   return (
     <ScreenView modal>
       <EventImage image={event.image} style={{ borderRadius: 32 }} />
@@ -32,13 +35,15 @@ export default function EventDetailModal() {
       <View className="mt-md gap-sm">
         <Text className="text-foreground text-2xl font-bold">{event.name}</Text>
 
-        <View className="flex flex-row gap-xs flex-wrap">
-          <View className="bg-primary/20 px-sm py-1 rounded-full">
-            <Text className="text-primary text-sm font-medium">
-              {event.sport.name}
-            </Text>
+        {sportLabel ? (
+          <View className="flex flex-row gap-xs flex-wrap">
+            <View className="bg-primary/20 px-sm py-1 rounded-full">
+              <Text className="text-primary text-sm font-medium">
+                {sportLabel}
+              </Text>
+            </View>
           </View>
-        </View>
+        ) : null}
 
         <View className="gap-xs mt-xs">
           <Row label="Date" value={formatEventDate(event.startAt)} />

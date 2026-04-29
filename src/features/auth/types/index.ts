@@ -9,7 +9,6 @@ export interface RegisterPayload {
   pseudo: string;
   email: string;
   password: string;
-  confirmPassword: string;
   birthday: string;
   sexe: Sexe;
 }

@@ -1,3 +1,4 @@
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useCurrentUser } from "@/features/users";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
@@ -23,8 +24,11 @@ const views: ViewType[] = [
   { id: "5", screen: "/search", icon: "search" },
 ];
 
-const screenToTabName = (screen: string) =>
-  screen === "/" ? "index" : screen.slice(1);
+const screenToTabName = (screen: string) => {
+  if (screen === "/") return "index";
+  if (screen === "/map") return "map/index";
+  return screen.slice(1);
+};
 
 export default function Navbar({ state, navigation }: BottomTabBarProps) {
   const router = useRouter();
@@ -72,8 +76,8 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
       >
         <View className="h-full flex flex-row justify-between items-center gap-xl">
           <BlurView
-            intensity={10}
-            tint={blurTint}
+            intensity={pathname === "/map" ? 100 : 10}
+            tint={pathname === "/map" ? "light" : blurTint}
             className="overflow-hidden h-full flex-1 flex flex-row justify-around items-center border border-border rounded-full"
           >
             {views.map((view) => (

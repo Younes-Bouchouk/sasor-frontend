@@ -1,5 +1,6 @@
 import { ScreenView } from "@/components/ui/ScreenView";
 import { useEvents } from "@/features/events";
+import { formatSportLabel } from "@/features/events/utils/formatSportLabel";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { Text, useWindowDimensions, View } from "react-native";
@@ -22,6 +23,8 @@ export default function EventDetailScreen() {
     );
   }
 
+  const sportLabel = formatSportLabel(event.sport);
+
   return (
     <ScreenView className="">
       <Image
@@ -33,13 +36,15 @@ export default function EventDetailScreen() {
       <View className="mt-md gap-sm">
         <Text className="text-foreground text-2xl font-bold">{event.name}</Text>
 
-        <View className="flex flex-row gap-xs flex-wrap">
-          <View className="bg-primary/20 px-sm py-1 rounded-full">
-            <Text className="text-primary text-sm font-medium">
-              {event.sport.name}
-            </Text>
+        {sportLabel ? (
+          <View className="flex flex-row gap-xs flex-wrap">
+            <View className="bg-primary/20 px-sm py-1 rounded-full">
+              <Text className="text-primary text-sm font-medium">
+                {sportLabel}
+              </Text>
+            </View>
           </View>
-        </View>
+        ) : null}
 
         <View className="gap-xs mt-xs">
           <Row label="Date" value={event.startAt} />

@@ -1,15 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
-import { fetchAPI } from "../services/api";
 import { useAuth } from "../contexts/AuthProvider";
+import { fetchAPI } from "../services/api";
 
 export function useExitEvent() {
   const { token } = useAuth();
 
   const exitEvent = async (eventId: number) => {
     console.log(`Tentative de quitter l'événement ${eventId}...`);
-    
+
     try {
-      const response = await fetchAPI(`/events/${eventId}/exit`, "DELETE",  token,{} );
+      const response = await fetchAPI(
+        `/events/${eventId}/exit`,
+        "DELETE",
+        token,
+        {},
+      );
       console.log("Réponse de l'API :", response);
       return response;
     } catch (error) {
@@ -18,7 +23,7 @@ export function useExitEvent() {
   };
 
   return useMutation({
-    mutationFn: exitEvent,  
+    mutationFn: exitEvent,
     onSuccess: (data) => {
       console.log("Succès !", data);
     },
@@ -26,5 +31,4 @@ export function useExitEvent() {
       console.error("Erreur lors de la requête :", error);
     },
   });
-  
 }
