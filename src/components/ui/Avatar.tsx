@@ -14,9 +14,10 @@ type Props = {
   uri?: string | null;
   size?: AvatarSize;
   onPress?: () => void;
+  className?: string;
 };
 
-export function Avatar({ id, uri, size = "sm", onPress }: Props) {
+export function Avatar({ id, uri, size = "sm", onPress, className }: Props) {
   const pathname = usePathname();
   const containerClass = `${sizeClass[size]} aspect-square rounded-full overflow-hidden border border-border bg-secondary`;
 
@@ -31,8 +32,8 @@ export function Avatar({ id, uri, size = "sm", onPress }: Props) {
 
   return (
     <TouchableOpacity
-      className={containerClass}
-      onPress={() => onPress ? onPress() : redirectToUserScreen(id)}
+      className={`${containerClass} ${className}`}
+      onPress={() => (onPress ? onPress() : redirectToUserScreen(id))}
     >
       <Image
         style={{ width: "100%", height: "100%" }}

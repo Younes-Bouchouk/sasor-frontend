@@ -3,6 +3,7 @@ import {
   StyleProp,
   Text,
   TouchableOpacity,
+  useColorScheme,
   View,
   ViewStyle,
 } from "react-native";
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function EventCard({ event, onPress, style }: Props) {
+  const theme = useColorScheme();
   const sportLabel = formatSportLabel(event.sport);
   const participantCount = event.participants?.length ?? 0;
 
@@ -41,12 +43,18 @@ export function EventCard({ event, onPress, style }: Props) {
         <View className="flex flex-row gap-xs">
           {sportLabel ? (
             <View className="bg-foreground py-badge-y px-badge-x rounded-full">
-              <Text className="text-xs ">{sportLabel}</Text>
+              <Text className="text-xs text-primary-foreground">
+                {sportLabel}
+              </Text>
             </View>
           ) : null}
           <View className="flex flex-row gap-1 bg-foreground py-badge-y px-badge-x rounded-full">
-            <Ionicons name="people-outline" size={14} />
-            <Text className="text-xs">
+            <Ionicons
+              name="people-outline"
+              size={14}
+              color={theme === "dark" ? "black" : "white"}
+            />
+            <Text className="text-xs text-primary-foreground">
               {participantCount}/{event.maxParticipants}
             </Text>
           </View>

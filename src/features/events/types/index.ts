@@ -5,9 +5,9 @@ export type Event = {
     name: string;
   };
   maxParticipants: number;
-  participants: {
-    participant: Participant;
-  }[];
+  participants: Participants[];
+  userId?: Participant;
+  organizer: Organizer;
   startAt: string;
   location: string;
   description: string;
@@ -26,4 +26,10 @@ export type Participant = {
 
 export type Participants = {
   participant: Participant;
+};
+
+export type Organizer = {
+  id: string;
+  pseudo: string;
+  profilePicture: string;
 };

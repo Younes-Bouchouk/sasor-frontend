@@ -7,6 +7,7 @@ type Props = {
   className?: string;
   modal?: boolean;
   scrollable?: boolean;
+  padding?: boolean;
 };
 
 export const ScreenView = ({
@@ -14,13 +15,14 @@ export const ScreenView = ({
   className = "",
   modal = false,
   scrollable = true,
+  padding = true,
 }: Props) => {
   const { bottom } = useSafeAreaInsets();
 
   if (!scrollable) {
     return (
       <View
-        className={`flex-1 bg-background ${modal ? "pt-md" : "pt-xs"}`}
+        className={`flex-1 bg-background ${padding && modal ? "pt-md" : "pt-xs"}`}
         style={{ paddingBottom: bottom + 60 }}
       >
         <View className={`flex-1 pxscreen_edge ${className}`}>{children}</View>
@@ -31,12 +33,14 @@ export const ScreenView = ({
   return (
     <ScrollView
       className={`
-        flex-1 bg-background 
-        ${modal ? "ptmd" : "pt-xs"}
+        flex-1 bg-background
+        ${padding ? (modal ? "pt-md" : "pt-xs") : "p-0"}
       `}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 60 }}
     >
-      <View className={`flex-1  px-screen_edge ${className}`}>{children}</View>
+      <View className={`flex-1  ${padding && "px-screen_edge"} ${className}`}>
+        {children}
+      </View>
     </ScrollView>
   );
 };
