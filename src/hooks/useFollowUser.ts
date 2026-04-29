@@ -1,14 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { fetchAPI } from "../services/api";
 import { useAuth } from "@/features/auth";
+import { followUserService } from "../services/followService";
 
 export function useFollowUser() {
-    const { token } = useAuth();
+  const { token } = useAuth();
 
   return useMutation({
-    mutationFn: async (followingId: number ) => {
-      return fetchAPI("/follows/me", "POST", token, { followingId });
-    },
+    mutationFn: (followingId: number) =>
+      followUserService(followingId, token),
     onSuccess: () => {
       // Logique après la création, par exemple, rafraîchir la liste des abonnements
       console.log("Utilisateur plus suivi avec succès");
