@@ -1,4 +1,3 @@
-import { Avatar } from "@/components/ui/Avatar";
 import { useAuth } from "@/features/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
@@ -23,8 +22,11 @@ const views: ViewType[] = [
   { id: "5", screen: "/search", icon: "search" },
 ];
 
-const screenToTabName = (screen: string) =>
-  screen === "/" ? "index" : screen.slice(1);
+const screenToTabName = (screen: string) => {
+  if (screen === "/") return "index";
+  if (screen === "/map") return "map/index";
+  return screen.slice(1);
+};
 
 export default function Navbar({ state, navigation }: BottomTabBarProps) {
   const router = useRouter();
@@ -82,7 +84,7 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
           </BlurView>
         </View>
       </View>
-      {["/", "/map"].includes(pathname) && (
+      {/* {["/", "/map"].includes(pathname) && (
         <View className="absolute top-screen_edge right-screen_edge">
           <Avatar
             id={user.id}
@@ -91,7 +93,7 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
             onPress={() => router.push("/profile" as RelativePathString)}
           />
         </View>
-      )}
+      )} */}
     </>
   );
 }

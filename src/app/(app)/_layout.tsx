@@ -10,7 +10,7 @@ export default function AppLayout() {
         screenOptions={{ headerShown: false }}
       >
         <Tabs.Screen name="index" options={{ title: "Accueil" }} />
-        <Tabs.Screen name="map" options={{ title: "Map" }} />
+        <Tabs.Screen name="map/index" options={{ title: "Map" }} />
         <Tabs.Screen name="events" options={{ title: "Mes events" }} />
         <Tabs.Screen name="search" options={{ title: "Recherche" }} />
         <Tabs.Screen name="profile" options={{ title: "Profil" }} />

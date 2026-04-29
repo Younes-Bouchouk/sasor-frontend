@@ -1,7 +1,7 @@
 export type Event = {
   id: string;
   name: string;
-  sport: {
+  sport?: {
     name: string;
   };
   maxParticipants: number;

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Event } from "../types";
 import { formatEventDateTime } from "../utils/formatEventDateTime";
+import { formatSportLabel } from "../utils/formatSportLabel";
 import { EventImage } from "./EventImage";
 
 type Props = {
@@ -17,6 +18,9 @@ type Props = {
 };
 
 export function EventCard({ event, onPress, style }: Props) {
+  const sportLabel = formatSportLabel(event.sport);
+  const participantCount = event.participants?.length ?? 0;
+
   return (
     <TouchableOpacity
       className="w-event-card borde border-border mr-sm"
@@ -35,13 +39,15 @@ export function EventCard({ event, onPress, style }: Props) {
           </Text>
         </View>
         <View className="flex flex-row gap-xs">
-          <View className="bg-foreground py-badge-y px-badge-x rounded-full">
-            <Text className="text-xs ">{event.sport.name}</Text>
-          </View>
+          {sportLabel ? (
+            <View className="bg-foreground py-badge-y px-badge-x rounded-full">
+              <Text className="text-xs ">{sportLabel}</Text>
+            </View>
+          ) : null}
           <View className="flex flex-row gap-1 bg-foreground py-badge-y px-badge-x rounded-full">
             <Ionicons name="people-outline" size={14} />
             <Text className="text-xs">
-              {event.participants.length}/{event.maxParticipants}
+              {participantCount}/{event.maxParticipants}
             </Text>
           </View>
         </View>

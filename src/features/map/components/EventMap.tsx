@@ -1,5 +1,6 @@
 // components/EventMap.tsx
 import { useAuth } from "@/features/auth";
+import { formatSportLabel } from "@/features/events/utils/formatSportLabel";
 import { useEventsMap } from "@/hooks/useEventsMap";
 import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
@@ -42,6 +43,8 @@ const EventMap = () => {
     refetch,
     calculateEventsWithDistance,
   } = useEventsMap();
+
+  console.log(mapEvents, "---------------ICI---------------");
 
   // Récupération de la position
   useEffect(() => {
@@ -362,7 +365,9 @@ const EventMap = () => {
 
                 <View style={styles.calloutTextContainer}>
                   <Text style={styles.calloutTitle}>{event.name}</Text>
-                  <Text style={styles.calloutSport}>{event.sport}</Text>
+                  <Text style={styles.calloutSport}>
+                    {formatSportLabel(event.sport)}
+                  </Text>
 
                   {userLocation && (
                     <View style={styles.calloutDistanceRow}>
@@ -437,7 +442,9 @@ const EventMap = () => {
                 <View style={styles.modalContent}>
                   <View style={styles.modalRow}>
                     <Ionicons name="basketball" size={20} color="#18FD9C" />
-                    <Text style={styles.modalText}>{selectedEvent.sport}</Text>
+                    <Text style={styles.modalText}>
+                      {formatSportLabel(selectedEvent.sport)}
+                    </Text>
                   </View>
 
                   <View style={styles.modalRow}>

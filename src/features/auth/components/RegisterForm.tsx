@@ -8,6 +8,10 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../providers/AuthProvider";
+import {
+  REGISTER_PASSWORD_CRITERIA,
+  validateRegisterForm,
+} from "../registerRules";
 import { authService } from "../services/authService";
 import { SEXE_OPTIONS, Sexe } from "../types";
 
@@ -24,21 +28,20 @@ export function RegisterForm() {
 
   const handleRegister = async () => {
     setError(null);
+    const validationError = validateRegisterForm({
+      pseudo,
+      email,
+      password,
+      birthday,
+      sexe,
+    });
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     const trimmedPseudo = pseudo.trim();
     const trimmedEmail = email.trim();
-    if (!trimmedPseudo || !trimmedEmail || !password) {
-      setError("Pseudo, email et mot de passe sont requis.");
-      return;
-    }
-    if (!sexe) {
-      setError("Veuillez sélectionner votre sexe.");
-      return;
-    }
     const birth = new Date(birthday.trim());
-    if (!birthday.trim() || Number.isNaN(birth.getTime())) {
-      setError("Indiquez une date de naissance valide (YYYY-MM-DD).");
-      return;
-    }
     setLoading(true);
     try {
       const data = await authService.registerUser({
@@ -46,7 +49,7 @@ export function RegisterForm() {
         email: trimmedEmail,
         password,
         birthday: birth.toISOString(),
-        sexe,
+        sexe: sexe!,
       });
       await login(data.access_token);
     } catch (e: any) {
@@ -77,12 +80,19 @@ export function RegisterForm() {
       />
       <TextInput
         className="border border-gray-800 rounded-lg px-md py-sm text-white bg-transparent"
-        placeholder="Mot de passe (8-20 caractères)"
+        placeholder="Mot de passe"
         placeholderTextColor="#fff"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
+      <View className="gap-xs">
+        {REGISTER_PASSWORD_CRITERIA.map((criterion) => (
+          <Text key={criterion} className="text-xs text-white/60">
+            • {criterion}
+          </Text>
+        ))}
+      </View>
       <TextInput
         className="border border-gray-800 rounded-lg px-md py-sm text-white bg-transparent"
         placeholder="Date de naissance (YYYY-MM-DD)"
