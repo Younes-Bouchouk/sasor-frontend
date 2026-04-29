@@ -38,7 +38,7 @@ export const ScreenView = ({
       `}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 60 }}
     >
-      <View className={`flex-1  ${padding && "px-screen_edge"} ${className}`}>
+      <View className={`flex-1 ${padding && "px-screen_edge"} ${className}`}>
         {children}
       </View>
     </ScrollView>

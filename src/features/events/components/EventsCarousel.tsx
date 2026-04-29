@@ -1,13 +1,16 @@
-import { FlatList } from "react-native";
+import { FlatList, Text } from "react-native";
 import { Event } from "../types";
 import { EventCard } from "./EventCard";
 
 type Props = {
-  events: Event[];
+  events: Event[] | undefined;
   onPress: (event: Event) => void;
 };
 
 export function EventsCarousel({ events, onPress }: Props) {
+  if (events == undefined) {
+    return <Text className={"text-foreground"}>Aucun événement...</Text>;
+  }
   return (
     <FlatList
       className="pl-4" // Solution temporaire pour que le carroussel colle les bords

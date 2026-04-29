@@ -1,5 +1,15 @@
 export { EventCard } from "./components/EventCard";
 export { EventsCarousel } from "./components/EventsCarousel";
+export { JoinEventButton } from "./components/JoinEventButton";
+export { ParticipantsBadge } from "./components/ParticipantsBadge";
+export { ParticipantsList } from "./components/ParticipantsList";
+export { SportBadge } from "./components/SportBadge";
+export { useCreateEvent } from "./hooks/useCreateEvent";
 export { useEvents } from "./hooks/useEvents";
+export { useFollowersEvents } from "./hooks/useFollowersEvents";
+export { useJoinedEvents } from "./hooks/useJoinedEvents";
+export { useJoinEvent } from "./hooks/useJoinEvent";
+export { useOrganizedEvents } from "./hooks/useOrganizedEvents";
+export { useLeaveEvent } from "./hooks/useLeaveEvent";
 export { eventService } from "./services/eventService";
 export type { Event } from "./types";

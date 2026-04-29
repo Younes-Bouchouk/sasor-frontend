@@ -1,20 +1,33 @@
 import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
-import { TitleScreen } from "@/components/ui/TitleScreen";
 import { useUser } from "@/features/users";
-import { useLocalSearchParams } from "expo-router";
-import { ActivityIndicator, Text, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { router, useLocalSearchParams } from "expo-router";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 
 export default function UserModal() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: user, isLoading } = useUser(id);
+  const iconColor = useColorScheme() === "dark" ? "#fff" : "#000";
 
   console.log("Id", id);
   console.log("Pseudo", user?.pseudo);
 
   return (
     <ScreenView modal>
-      <TitleScreen>INFOS UTILISATEUR</TitleScreen>
+      <TouchableOpacity
+        onPress={() => router.back()}
+        className="self-start px-sm pt-xs"
+      >
+        <Ionicons name="arrow-back" size={24} color={iconColor} />
+      </TouchableOpacity>
+      {/* <TitleScreen>INFOS UTILISATEUR</TitleScreen> */}
       {isLoading ? (
         <ActivityIndicator className="flex-1" />
       ) : (

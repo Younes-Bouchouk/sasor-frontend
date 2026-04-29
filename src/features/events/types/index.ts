@@ -33,3 +33,14 @@ export type Organizer = {
   pseudo: string;
   profilePicture: string;
 };
+
+export type CreateEventFormData = {
+  name: string;
+  description: string;
+  sportId: number | null;
+  maxParticipants: string;
+  location: string;
+  isPrivate: boolean;
+  startAt: Date | null;
+  image: string;
+};

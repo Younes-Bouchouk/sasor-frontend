@@ -1,19 +1,21 @@
-import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
+import { useAuth } from "@/features/auth";
 import { useEvents } from "@/features/events";
 import { EventImage } from "@/features/events/components/EventImage";
+import { JoinEventButton } from "@/features/events/components/JoinEventButton";
+import { ParticipantsList } from "@/features/events/components/ParticipantsList";
+import { SportBadge } from "@/features/events/components/SportBadge";
 import {
   formatEventDate,
   formatEventTime,
 } from "@/features/events/utils/formatEventDateTime";
-import { formatSportLabel } from "@/features/events/utils/formatSportLabel";
 import { useLocalSearchParams } from "expo-router";
-import { FlatList, Text, useWindowDimensions, View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function EventDetailModal() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { width } = useWindowDimensions();
   const { data: events } = useEvents();
+  const { userId } = useAuth();
   const event = events?.find((e) => e.id == id);
 
   if (!event) {
@@ -26,78 +28,52 @@ export default function EventDetailModal() {
     );
   }
 
-  const sportLabel = formatSportLabel(event.sport);
-
-  // On créer une copie de la liste des participants sans l'organisateur
-  const withoutOrganizer = event.participants.filter(
-    (p) => p.participant.id !== event.organizer.id,
+  const isOrganizer = String(event.organizer?.id) === String(userId);
+  const isParticipant = event.participants.some(
+    (p) => String(p.participant.id) === String(userId),
   );
-  const sortedParticipants = [
-    { participant: event.organizer },
-    ...withoutOrganizer,
-  ];
 
   return (
     <ScreenView modal padding={false}>
-      <EventImage image={event.image} style={{ borderRadius: 32 }} />
+      <View className="flex-1">
+        <EventImage image={event.image} style={{ borderRadius: 32 }} />
 
-      <View className="mt-md gap-sm px-xs">
-        <Text className="text-foreground text-2xl font-bold">{event.name}</Text>
-
-        {sportLabel ? (
-          <View className="flex flex-row gap-xs flex-wrap">
-            <View className="bg-primary/20 px-sm py-1 rounded-full">
-              <Text className="text-primary text-sm font-medium">
-                {sportLabel}
-              </Text>
-            </View>
-          </View>
-        ) : null}
-
-        <View className="gap-xs mt-xs">
-          <Row label="Date" value={formatEventDate(event.startAt)} />
-          <Row label="Heure" value={formatEventTime(event.startAt)} />
-          <Row label="Lieu" value={event.location} />
-        </View>
-
-        <View className="mt-xs">
-          <Text className="text-foreground opacity-50 text-xs uppercase mb-xs">
-            Description
+        <View className="mt-md gap-sm px-xs">
+          <Text className="text-foreground text-2xl font-bold">
+            {event.name}
           </Text>
-          <Text className="text-foreground leading-6">{event.description}</Text>
-        </View>
-        <View className="gap-xs">
-          <View className="flex-row justify-between items-center">
-            <Text className="text-foreground font-semibold">Participants</Text>
-            <Text className="text-foreground opacity-50 text-sm">
-              {event.participants.length}/{event.maxParticipants}
+
+          <View className="flex flex-row gap-xs flex-wrap">
+            <SportBadge sport={event.sport} />
+          </View>
+
+          <View className="gap-xs mt-xs">
+            <Row label="Date" value={formatEventDate(event.startAt)} />
+            <Row label="Heure" value={formatEventTime(event.startAt)} />
+            <Row label="Lieu" value={event.location} />
+          </View>
+
+          <View className="mt-xs">
+            <Text className="text-foreground opacity-50 text-xs uppercase mb-xs">
+              Description
+            </Text>
+            <Text className="text-foreground leading-6">
+              {event.description}
             </Text>
           </View>
-          <FlatList
-            data={sortedParticipants}
-            keyExtractor={(item) => item.participant.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 12 }}
-            renderItem={({ item }) => {
-              const isOrganizer = item.participant.id === event.organizer?.id;
 
-              return (
-                <View className="items-center gap-1 w-14">
-                  <Avatar
-                    id={item.participant.id}
-                    uri={item.participant.profilePicture}
-                    className={`${isOrganizer && "border border-primary"}`}
-                  />
-                  <Text
-                    className={`${isOrganizer ? "text-primary" : "text-foreground"} text-xs text-center`}
-                    numberOfLines={1}
-                  >
-                    {item.participant.pseudo}
-                  </Text>
-                </View>
-              );
-            }}
+          <ParticipantsList
+            participants={event.participants}
+            organizer={event.organizer}
+            maxParticipants={event.maxParticipants}
+          />
+        </View>
+
+        <View className="mt-auto">
+          <JoinEventButton
+            eventId={event.id}
+            isParticipant={isParticipant}
+            isOrganizer={isOrganizer}
           />
         </View>
       </View>

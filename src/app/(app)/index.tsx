@@ -1,34 +1,73 @@
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitleScreen } from "@/components/ui/TitleScreen";
-import { EventsCarousel, useEvents } from "@/features/events";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAuth } from "@/features/auth";
+import {
+  EventsCarousel,
+  useEvents,
+  useFollowersEvents,
+  type Event,
+} from "@/features/events";
 import { router } from "expo-router";
 import { ActivityIndicator, Text, View } from "react-native";
 
 export default function IndexScreen() {
-  const { data: events, isLoading } = useEvents();
+  const { userId } = useAuth();
+  const { data: allEvents, isLoading: loadingAll } = useEvents();
+  const { data: followersEvents, isLoading: loadingFollowers } =
+    useFollowersEvents();
+
+  const notJoined = (e: Event) =>
+    !e.participants.some((p) => String(p.participant.id) === String(userId));
+
+  const discoverEvents = allEvents?.filter(
+    (e) => String(e.organizer?.id) !== String(userId) && notJoined(e),
+  );
+
+  const filteredFollowersEvents = followersEvents?.filter(notJoined);
 
   return (
-    <ScreenView>
+    <ScreenView scrollable>
       <TitleScreen>ACCUEIL</TitleScreen>
-      <View className="flex-1 gap-md pt-md">
-        <View
-          className="gap-sm"
-          style={{ marginHorizontal: -16 }} // Solution temporaire pour que le carroussel colle les bords
-        >
-          <Text className="pl-4 text-foreground font-semibold text-base">
-            Événements à venir <Ionicons name="arrow-forward" size={16} />
-          </Text>
-          {isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <EventsCarousel
-              events={events ?? []}
-              onPress={(event) => router.push(`/event?id=${event.id}`)}
-            />
-          )}
-        </View>
+      <View className="gap-xl pt-md">
+        <Section
+          title="Découvrir"
+          events={discoverEvents}
+          isLoading={loadingAll}
+        />
+        <Section
+          title="Mes abonnements"
+          events={filteredFollowersEvents}
+          isLoading={loadingFollowers}
+        />
       </View>
     </ScreenView>
+  );
+}
+
+type SectionProps = {
+  title: string;
+  events: Event[] | undefined;
+  isLoading: boolean;
+};
+
+function Section({ title, events, isLoading }: SectionProps) {
+  return (
+    <View className="gap-sm">
+      <Text className="text-foreground font-semibold text-base">{title}</Text>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : !events || events.length === 0 ? (
+        <Text className="text-foreground opacity-40 text-sm">
+          Aucun événement
+        </Text>
+      ) : (
+        <View style={{ marginHorizontal: -16 }}>
+          <EventsCarousel
+            events={events}
+            onPress={(event) => router.push(`/event?id=${event.id}`)}
+          />
+        </View>
+      )}
+    </View>
   );
 }

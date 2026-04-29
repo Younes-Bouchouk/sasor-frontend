@@ -1,16 +1,16 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 import {
   StyleProp,
   Text,
   TouchableOpacity,
-  useColorScheme,
   View,
   ViewStyle,
 } from "react-native";
 import { Event } from "../types";
 import { formatEventDateTime } from "../utils/formatEventDateTime";
-import { formatSportLabel } from "../utils/formatSportLabel";
 import { EventImage } from "./EventImage";
+import { ParticipantsBadge } from "./ParticipantsBadge";
+import { SportBadge } from "./SportBadge";
 
 type Props = {
   event: Event;
@@ -19,14 +19,12 @@ type Props = {
 };
 
 export function EventCard({ event, onPress, style }: Props) {
-  const theme = useColorScheme();
-  const sportLabel = formatSportLabel(event.sport);
   const participantCount = event.participants?.length ?? 0;
 
   return (
     <TouchableOpacity
       className="w-event-card borde border-border mr-sm"
-      onPress={onPress}
+      onPress={() => router.push(`/event?id=${event.id}`)}
       style={style}
     >
       <EventImage image={event.image} />
@@ -41,23 +39,11 @@ export function EventCard({ event, onPress, style }: Props) {
           </Text>
         </View>
         <View className="flex flex-row gap-xs">
-          {sportLabel ? (
-            <View className="bg-foreground py-badge-y px-badge-x rounded-full">
-              <Text className="text-xs text-primary-foreground">
-                {sportLabel}
-              </Text>
-            </View>
-          ) : null}
-          <View className="flex flex-row gap-1 bg-foreground py-badge-y px-badge-x rounded-full">
-            <Ionicons
-              name="people-outline"
-              size={14}
-              color={theme === "dark" ? "black" : "white"}
-            />
-            <Text className="text-xs text-primary-foreground">
-              {participantCount}/{event.maxParticipants}
-            </Text>
-          </View>
+          <SportBadge sport={event.sport} />
+          <ParticipantsBadge
+            count={participantCount}
+            max={event.maxParticipants}
+          />
         </View>
       </View>
     </TouchableOpacity>
