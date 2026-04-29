@@ -4,8 +4,8 @@ import { RegisterForm } from "@/features/auth";
 
 export default function RegisterScreen() {
   return (
-    <ScreenView>
-      <TitleScreen>INSCRIPTION</TitleScreen>
+    <ScreenView className="h-screen max-h-[100vh] bg-foreground p-8">
+      <TitleScreen className="text-secondary">Pas encore inscrit ?</TitleScreen>
       <RegisterForm />
     </ScreenView>
   );

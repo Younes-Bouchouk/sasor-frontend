@@ -1,6 +1,6 @@
+import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitleScreen } from "@/components/ui/TitleScreen";
-import { Avatar } from "@/components/ui/Avatar";
 import { useAuth } from "@/features/auth";
 import { Text, TouchableOpacity, View } from "react-native";
 
