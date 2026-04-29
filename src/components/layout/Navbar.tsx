@@ -1,12 +1,12 @@
-import { Avatar } from "@/components/ui/Avatar";
-import { useAuth } from "@/features/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useCurrentUser } from "@/features/users";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { RelativePathString, usePathname, useRouter } from "expo-router";
 import React from "react";
 import { Pressable, useColorScheme, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Avatar } from "../ui/Avatar";
 
 type ViewType = {
   id: string;
@@ -30,8 +30,8 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { top, bottom } = useSafeAreaInsets();
-  const { user } = useAuth();
 
+  const { data: user } = useCurrentUser();
   const colorScheme = useColorScheme();
   const blurTint = colorScheme === "dark" ? "light" : "dark";
   const iconColor = colorScheme === "dark" ? "#fff" : "#000";
@@ -82,10 +82,10 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
           </BlurView>
         </View>
       </View>
-      {["/", "/map"].includes(pathname) && (
+      {["/", "/map"].includes(pathname) && user && (
         <View className="absolute top-screen_edge right-screen_edge">
           <Avatar
-            id={user.id}
+            id={String(user.id)}
             uri={user.profilePicture}
             size="sm"
             onPress={() => router.push("/profile" as RelativePathString)}

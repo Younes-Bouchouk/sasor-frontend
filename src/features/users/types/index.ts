@@ -1,7 +1,7 @@
 import type { Sexe } from "@/features/auth";
 
 export type User = {
-  id: number;
+  id: string;
   pseudo: string;
   email: string;
   profilePicture: string | null;

@@ -9,11 +9,12 @@ export default function UserModal() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: user, isLoading } = useUser(id);
 
-  console.log(user?.pseudo);
+  console.log("Id", id);
+  console.log("Pseudo", user?.pseudo);
 
   return (
     <ScreenView modal>
-      <TitleScreen>PROFIL UTILISATEUR</TitleScreen>
+      <TitleScreen>INFOS UTILISATEUR</TitleScreen>
       {isLoading ? (
         <ActivityIndicator className="flex-1" />
       ) : (

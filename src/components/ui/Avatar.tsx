@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { TouchableOpacity } from "react-native";
 
 type AvatarSize = "sm" | "lg";
@@ -17,20 +17,22 @@ type Props = {
 };
 
 export function Avatar({ id, uri, size = "sm", onPress }: Props) {
+  const pathname = usePathname();
   const containerClass = `${sizeClass[size]} aspect-square rounded-full overflow-hidden border border-border bg-secondary`;
 
-  const image = (
-    <Image
-      style={{ width: "100%", height: "100%" }}
-      contentFit="cover"
-      source={uri ? { uri } : require("@/../assets/images/icon.png")}
-    />
-  );
+  const redirectToUserScreen = (id: string) => {
+    console.log("");
+    console.log(pathname);
+    if (!["/user"].includes(pathname)) {
+      router.push(`/(modals)/user?id=${id}`);
+    }
+    return null;
+  };
 
   return (
     <TouchableOpacity
       className={containerClass}
-      onPress={() => router.push(`/user?id=${id}`)}
+      onPress={() => onPress ? onPress() : redirectToUserScreen(id)}
     >
       <Image
         style={{ width: "100%", height: "100%" }}
