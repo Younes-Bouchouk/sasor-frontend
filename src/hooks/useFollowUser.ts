@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchAPI } from "../services/api";
 import { useAuth } from "@/features/auth";
+import { followUserService } from "../services/followService";
 
 export function useFollowUser() {
   const { token } = useAuth();
