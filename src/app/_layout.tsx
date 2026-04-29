@@ -4,7 +4,15 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
 
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function AuthGuard() {
   const { token, isLoading } = useAuth();
