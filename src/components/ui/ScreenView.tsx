@@ -23,7 +23,7 @@ export const ScreenView = ({
         className={`flex-1 bg-background ${modal ? "pt-md" : "pt-xs"}`}
         style={{ paddingBottom: bottom + 60 }}
       >
-        <View className={`flex-1 px-screen_edge ${className}`}>{children}</View>
+        <View className={`flex-1 pxscreen_edge ${className}`}>{children}</View>
       </View>
     );
   }
@@ -32,7 +32,7 @@ export const ScreenView = ({
     <ScrollView
       className={`
         flex-1 bg-background 
-        ${modal ? "pt-md" : "pt-xs"}
+        ${modal ? "ptmd" : "pt-xs"}
       `}
       contentContainerStyle={{ flexGrow: 1, paddingBottom: bottom + 60 }}
     >

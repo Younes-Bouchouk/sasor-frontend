@@ -11,6 +11,20 @@ export default function ModalsLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="event"
+        options={{
+          title: "Modal Event",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="user"
+        options={{
+          title: "Modal User",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

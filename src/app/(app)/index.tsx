@@ -24,7 +24,7 @@ export default function IndexScreen() {
           ) : (
             <EventsCarousel
               events={events ?? []}
-              onPress={(event) => router.push(`/(app)/events/${event.id}`)}
+              onPress={(event) => router.push(`/event?id=${event.id}`)}
             />
           )}
         </View>

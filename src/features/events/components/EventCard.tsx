@@ -1,5 +1,4 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Image } from "expo-image";
 import {
   StyleProp,
   Text,
@@ -8,21 +7,14 @@ import {
   ViewStyle,
 } from "react-native";
 import { Event } from "../types";
+import { formatEventDateTime } from "../utils/formatEventDateTime";
+import { EventImage } from "./EventImage";
 
 type Props = {
   event: Event;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
 };
-
-function formatEventDate(isoDate: string): string {
-  const date = new Date(isoDate);
-  const day = date.getDate();
-  const month = date.toLocaleDateString("fr-FR", { month: "short" });
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  return `${day} ${month} · ${hours}h${minutes}`;
-}
 
 export function EventCard({ event, onPress, style }: Props) {
   return (
@@ -31,22 +23,12 @@ export function EventCard({ event, onPress, style }: Props) {
       onPress={onPress}
       style={style}
     >
-      <View className="borde border-red-400 aspect-event_image rounded-event_image overflow-hidden ">
-        <Image
-          source={
-            event.image
-              ? { uri: event.image }
-              : require("@/../assets/images/icon.png")
-          }
-          contentFit="cover"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </View>
+      <EventImage image={event.image} />
       <View className="pt-xs gap-1">
         <Text className="text-foreground font-semibold">{event.name}</Text>
         <View>
           <Text className="text-foreground opacity-60 text-sm">
-            {formatEventDate(event.startAt)}
+            {formatEventDateTime(event.startAt)}
           </Text>
           <Text className="text-foreground opacity-60 text-sm">
             {event.location}
