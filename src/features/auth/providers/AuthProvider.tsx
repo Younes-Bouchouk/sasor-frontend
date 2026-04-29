@@ -1,11 +1,18 @@
+import { User } from "@/features/users";
+import { fetchAPI } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { fetchAPI } from "@/services/api";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface AuthContextType {
   userId: number | null;
-  user: any | null;
+  user: User | null;
   token: string | null;
   isLoading: boolean;
   login: (token: string) => Promise<void>;
@@ -48,7 +55,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserId(userData.id);
       setUser(userData);
     } catch (error) {
-      console.error("Erreur lors de la récupération des données utilisateur :", error);
+      console.error(
+        "Erreur lors de la récupération des données utilisateur :",
+        error,
+      );
     }
   };
 
@@ -79,7 +89,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userId, user, token, isLoading, login, logout, refetchUser, updateUserImage }}>
+    <AuthContext.Provider
+      value={{
+        userId,
+        user,
+        token,
+        isLoading,
+        login,
+        logout,
+        refetchUser,
+        updateUserImage,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
