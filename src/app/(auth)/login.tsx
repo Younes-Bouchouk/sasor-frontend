@@ -3,7 +3,6 @@ import { TitleScreen } from "@/components/ui/TitleScreen";
 import { LoginForm } from "@/features/auth";
 import { fetchAPI } from "@/services/api";
 import { useEffect, useState } from "react";
-import { Text } from "react-native";
 
 export default function LoginScreen() {
   const [test, setTest] = useState("chargement...");
