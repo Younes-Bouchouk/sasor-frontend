@@ -32,34 +32,34 @@ export function LoginForm() {
   };
 
   return (
-    <View className="flex-1 gap-sm pt-md">
+    <View className="h-full max-h-[100vh] flex-1 gap-sm pt-md">
       <TextInput
-        className="border border-border rounded-lg px-md py-sm text-foreground bg-background"
+        className="border border-gray-800 rounded-lg px-md py-sm text-white bg-transparent"
         placeholder="Email"
-        placeholderTextColor="#888"
+        placeholderTextColor="#fff"
         autoCapitalize="none"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
-        className="border border-border rounded-lg px-md py-sm text-foreground bg-background"
+        className="border border-gray-800 rounded-lg px-md py-sm text-white bg-transparent"
         placeholder="Mot de passe"
-        placeholderTextColor="#888"
+        placeholderTextColor="#fff"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       {error && <Text className="text-red-500 text-sm">{error}</Text>}
       <TouchableOpacity
-        className="bg-primary rounded-lg py-sm items-center"
+        className="bg-secondary rounded-lg py-sm items-center"
         onPress={handleLogin}
         disabled={loading}
       >
         {loading ? (
           <ActivityIndicator color="white" />
         ) : (
-          <Text className="text-primary-foreground font-semibold">
+          <Text className="text-secondary-foreground font-semibold">
             Se connecter
           </Text>
         )}
@@ -69,7 +69,7 @@ export function LoginForm() {
         onPress={() => router.replace("/(auth)/register")}
       >
         <Text className="text-foreground opacity-60">
-          Pas de compte ? <Text className="text-primary">{"S'inscrire"}</Text>
+          Pas de compte ? <Text className="text-secondary">{"S'inscrire"}</Text>
         </Text>
       </TouchableOpacity>
     </View>

@@ -14,9 +14,9 @@ export default function LoginScreen() {
   }, []);
 
   return (
-    <ScreenView>
-      <TitleScreen>CONNEXION</TitleScreen>
-      {/* <Text className="text-foreground text-center">test API: {test}</Text> */}
+    <ScreenView className="h-screen max-h-[100vh] bg-foreground p-8">
+      <TitleScreen className="text-secondary">Connecte toi !</TitleScreen>
+      <Text className="text-white text-center">test API: {test}</Text>
       <LoginForm />
     </ScreenView>
   );
