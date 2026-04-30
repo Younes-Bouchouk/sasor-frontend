@@ -1,6 +1,5 @@
-
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useCurrentUser } from "@/features/users";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { RelativePathString, usePathname, useRouter } from "expo-router";
@@ -86,7 +85,7 @@ export default function Navbar({ state, navigation }: BottomTabBarProps) {
           </BlurView>
         </View>
       </View>
-      {["/", "/map"].includes(pathname) && user && (
+      {["/", "/map", "/events"].includes(pathname) && user && (
         <View className="absolute top-screen_edge right-screen_edge">
           <Avatar
             id={String(user.id)}

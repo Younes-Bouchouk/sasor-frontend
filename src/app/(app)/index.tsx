@@ -53,7 +53,8 @@ type SectionProps = {
 function Section({ title, events, isLoading }: SectionProps) {
   return (
     <View className="gap-sm">
-      <Text className="text-foreground font-semibold text-base">{title}</Text>
+      <View className="w-full border-b border-foreground opacity-10" />
+      <Text className="text-foreground font-semibold text-xl  ">{title}</Text>
       {isLoading ? (
         <ActivityIndicator />
       ) : !events || events.length === 0 ? (

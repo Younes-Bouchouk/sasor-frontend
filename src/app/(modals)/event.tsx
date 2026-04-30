@@ -32,6 +32,7 @@ export default function EventDetailModal() {
   const isParticipant = event.participants.some(
     (p) => String(p.participant.id) === String(userId),
   );
+  const isFull = event.participants.length >= event.maxParticipants;
 
   return (
     <ScreenView modal padding={false}>
@@ -74,6 +75,7 @@ export default function EventDetailModal() {
             eventId={event.id}
             isParticipant={isParticipant}
             isOrganizer={isOrganizer}
+            isFull={isFull}
           />
         </View>
       </View>

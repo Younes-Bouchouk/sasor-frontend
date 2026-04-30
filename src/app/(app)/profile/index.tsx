@@ -2,12 +2,14 @@ import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
 import { TitleScreen } from "@/components/ui/TitleScreen";
 import { useAuth } from "@/features/auth";
+import { useMyFollowStats } from "@/features/follows";
 import { useCurrentUser } from "@/features/users";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileScreen() {
   const { logout } = useAuth();
   const { data: user, isLoading } = useCurrentUser();
+  const { followersCount, followingCount } = useMyFollowStats();
 
   console.log(user);
 
@@ -28,6 +30,10 @@ export default function ProfileScreen() {
               {user?.pseudo}
             </Text>
             <Text className="text-foreground opacity-60">{user?.email}</Text>
+            <View className="flex-row gap-lg">
+              <StatItem label="Abonnés" count={followersCount} />
+              <StatItem label="Abonnements" count={followingCount} />
+            </View>
           </View>
 
           <View className="border border-border rounded-lg overflow-hidden">
@@ -51,6 +57,15 @@ export default function ProfileScreen() {
         </View>
       )}
     </ScreenView>
+  );
+}
+
+function StatItem({ label, count }: { label: string; count: number }) {
+  return (
+    <View className="items-center">
+      <Text className="text-foreground font-bold text-lg">{count}</Text>
+      <Text className="text-foreground opacity-60 text-xs">{label}</Text>
+    </View>
   );
 }
 

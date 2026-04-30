@@ -1,5 +1,6 @@
 import { Avatar } from "@/components/ui/Avatar";
 import { ScreenView } from "@/components/ui/ScreenView";
+import { useUserFollowStats } from "@/features/follows";
 import { useUser } from "@/features/users";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
@@ -14,6 +15,7 @@ import {
 export default function UserModal() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: user, isLoading } = useUser(id);
+  const { followersCount, followingCount } = useUserFollowStats(id);
   const iconColor = useColorScheme() === "dark" ? "#fff" : "#000";
 
   console.log("Id", id);
@@ -38,6 +40,10 @@ export default function UserModal() {
               {user?.pseudo}
             </Text>
             <Text className="text-foreground opacity-60">{user?.email}</Text>
+            <View className="flex-row gap-lg">
+              <StatItem label="Abonnés" count={followersCount} />
+              <StatItem label="Abonnements" count={followingCount} />
+            </View>
           </View>
 
           <View className="border border-border rounded-lg overflow-hidden">
@@ -54,6 +60,15 @@ export default function UserModal() {
         </View>
       )}
     </ScreenView>
+  );
+}
+
+function StatItem({ label, count }: { label: string; count: number }) {
+  return (
+    <View className="items-center">
+      <Text className="text-foreground font-bold text-lg">{count}</Text>
+      <Text className="text-foreground opacity-60 text-xs">{label}</Text>
+    </View>
   );
 }
 
