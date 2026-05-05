@@ -1,12 +1,12 @@
-// src/app/(app)/search/index.tsx
+// app/(tabs)/search/index.tsx
 import { SearchSkeleton } from "@/features/search/components/LoadingSkeleton";
 import { SearchBar } from "@/features/search/components/SearchBar";
 import { UserCard } from "@/features/search/components/UserCard";
-import { useUserSearch } from "@/hooks/useUserSearch";
+import { useUserSearch } from "@/features/search/hooks/useUserSearch";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, RefreshControl, Text, View, ActivityIndicator, Modal, TouchableOpacity } from "react-native";
+import { FlatList, RefreshControl, Text, View, TouchableOpacity } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function SearchPage() {
@@ -30,16 +30,12 @@ export default function SearchPage() {
   } = useUserSearch();
 
   const handleFilterPress = () => {
-    // Navigation vers le modal via expo-router
     router.push("/(modals)/filterSearch");
-    // Ou si vous voulez un modal local:
-    // setFilterModalVisible(true);
   };
 
-  // Gestion de l'erreur
   if (error) {
     return (
-      <GestureHandlerRootView className="flex-1 ">
+      <GestureHandlerRootView className="flex-1">
         <View className="flex-1 items-center justify-center">
           <Ionicons name="alert-circle" size={64} color="#E74C3C" />
           <Text className="text-red-500 text-center mt-4">Une erreur est survenue</Text>
@@ -85,9 +81,8 @@ export default function SearchPage() {
   };
 
   return (
-    <GestureHandlerRootView className="flex-1 ">
+    <GestureHandlerRootView className="flex-1">
       <View className="flex-1">
-        {/* Header */}
         <View className="pt-12 pb-4 px-4 border-b border-gray-800">
           <SearchBar 
             onSearch={handleSearch} 
@@ -97,7 +92,6 @@ export default function SearchPage() {
           />
         </View>
 
-        {/* Affichage des filtres actifs */}
         {(filters.sport || filters.minParticipants || filters.maxParticipants) && (
           <View className="px-4 py-2 flex-row flex-wrap gap-2 border-b border-gray-800">
             {filters.sport && (
