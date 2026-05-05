@@ -6,8 +6,14 @@ import type { CreateEventFormData } from "../types";
 export function useCreateEvent() {
   const { token } = useAuth();
   const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (data: CreateEventFormData) => eventService.create(data, token!),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["events"] }),
+    onSuccess: () => {
+      // Invalider toutes les queries liées aux événements
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({ queryKey: ["events", "organized"] });
+      queryClient.invalidateQueries({ queryKey: ["events", "joined"] });
+    },
   });
 }

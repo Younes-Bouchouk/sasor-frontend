@@ -1,13 +1,11 @@
 /* KHALID */
-// export const API_BASE_URL = "http://10.57.32.65:4000";
-// export const API_BASE_URL = "http://192.168.32.1:4000";
-// export const API_BASE_URL = "http://10.57.32.65:4000";
+ export const API_BASE_URL = "http://10.57.32.65:4000";
 
 /* YOUNES */
-// export const API_BASE_URL = "http://192.168.1.86:4000";
+//export const API_BASE_URL = "http://192.168.1.86:4000";
 
 /* RENDER */
-export const API_BASE_URL = "https://sasor-backend.onrender.com";
+//export const API_BASE_URL = "https://sasor-backend.onrender.com";
 
 export const fetchAPI = async (
   path: string,

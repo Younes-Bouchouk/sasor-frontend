@@ -1,4 +1,6 @@
+// src/features/events/services/eventService.ts
 import { fetchAPI } from "@/services/api";
+import { socketService } from "@/services/socket";
 import type { CreateEventFormData, Event } from "../types";
 
 export const eventService = {
@@ -10,11 +12,27 @@ export const eventService = {
     return fetchAPI(`/events/${id}`, "GET", token);
   },
 
-  join: (eventId: string, token: string): Promise<void> =>
-    fetchAPI(`/events/${eventId}/join`, "POST", token),
+  join: async (eventId: string, token: string): Promise<void> => {
+    const response = await fetchAPI(`/events/${eventId}/join`, "POST", token);
+    
+    // Émettre l'événement via Socket.IO pour notifier les autres utilisateurs
+    if (socketService.isConnected) {
+      socketService.emit('joinEvent', { eventId });
+    }
+    
+    return response;
+  },
 
-  leave: (eventId: string, token: string): Promise<void> =>
-    fetchAPI(`/events/${eventId}/exit`, "DELETE", token),
+  leave: async (eventId: string, token: string): Promise<void> => {
+    const response = await fetchAPI(`/events/${eventId}/exit`, "DELETE", token);
+    
+    // Émettre l'événement via Socket.IO
+    if (socketService.isConnected) {
+      socketService.emit('exitEvent', { eventId });
+    }
+    
+    return response;
+  },
 
   getJoined: (token: string): Promise<Event[]> =>
     fetchAPI("/events/me", "GET", token),
@@ -25,8 +43,8 @@ export const eventService = {
   getFollowers: (token: string): Promise<Event[]> =>
     fetchAPI("/events/followers", "GET", token),
 
-  create: (data: CreateEventFormData, token: string): Promise<Event> =>
-    fetchAPI("/events", "POST", token, {
+  create: async (data: CreateEventFormData, token: string): Promise<Event> => {
+    const eventData = {
       name: data.name,
       description: data.description,
       sportId: data.sportId,
@@ -35,5 +53,15 @@ export const eventService = {
       isPrivate: data.isPrivate,
       startAt: data.startAt?.toISOString(),
       image: data.image || undefined,
-    }),
+    };
+    
+    const newEvent = await fetchAPI("/events", "POST", token, eventData);
+    
+    // Émettre l'événement via Socket.IO pour notifier tous les utilisateurs
+    if (socketService.isConnected) {
+      socketService.emit('eventCreated', newEvent);
+    }
+    
+    return newEvent;
+  },
 };
